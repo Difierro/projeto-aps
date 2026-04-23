@@ -1,0 +1,46 @@
+@startuml
+left to right direction
+
+class Usuario{
+    - id: int
+    - nome: str 
+    - email: str
+    - senha: str
+    - tipo_usuario: str 
+    - ativo: bool 
+    + autenticar(email:str, senha:str): bool
+    + ehGerente(): bool
+}
+
+class Cliente{
+    - telefone: str
+    - preferencias:str
+    - dataCadastro: dataTime 
+}
+
+class GestaoService{
+    + cadastrarUsuario(dados: dict): Usuario
+    + removerUsuario(id: int): bool
+    + listarUsuarios(): List<Usuario>
+    + cadastrarCliente(dados: dict): Cliente
+    + buscarCliente(filtro: str): List<Cliente>
+    + obterHistoricoCliente(id: int): List<Agendamento>
+}
+
+class Agendamento{
+    - id: int
+    - clientId: Cliente
+    - profissionalId: int
+    - dataHora: dataTime
+    - tipoServico: str
+    - status: str
+    - valor: float
+    - tipoPagamento: str
+    - horaInicio: dataTime
+    - observacoes: str
+    + reagendar(novaData: dataTime):bool
+    + cancelar(): bool
+    + finalizar(valor: float, pagamento: str): bool
+    + conflita(outro: Agendamento): bool
+}
+@enduml
