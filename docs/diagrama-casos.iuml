@@ -6,13 +6,15 @@ class Usuario{
     nome 
     email
     senha
-    tipo_usuario 
+    tipoUsuario 
     ativo 
     autenticar()
     ehGerente()
 }
 
 class Cliente{
+    id
+    nome
     telefone
     preferencias
     dataCadastro 
@@ -25,6 +27,16 @@ class GestaoService{
     cadastrarCliente()
     buscarCliente()
     obterHistoricoCliente()
+}
+
+class AgendamentoService{
+    criarAgendamento()
+    reagendar()
+    cancelarAgendamento()
+    verificarDisponibilidade()
+    obterAgenda()
+    finalizarAtendimento()
+    gerarRelatorio()   
 }
 
 class Agendamento{
@@ -43,4 +55,15 @@ class Agendamento{
     finalizar()
     conflita()
 }
+
+GestaoService ..> Usuario : gerencia
+GestaoService ..> Cliente : gerencia
+
+AgendamentoService ..> Usuario : consulta
+AgendamentoService ..> Cliente : consulta
+AgendamentoService ..> Agendamento : gerencia
+
+Usuario "1" *-- "0..*" Agendamento : atende
+Cliente "1" *-- "0..*" Agendamento : possui
+
 @enduml
