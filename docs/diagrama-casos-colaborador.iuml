@@ -1,0 +1,47 @@
+@startuml Casos de Uso - Colaborador
+left to right direction
+
+' ========== ATORES ==========
+:Colaborador: as Colaborador
+:Cliente: as Cliente
+:Sistema: as Sistema
+
+' ========== CASOS DE USO DO COLABORADOR ==========
+rectangle "Funcionalidades do Colaborador" {
+    usecase "Autenticar no Sistema" as UC_Auth
+    usecase "Cadastrar Cliente" as UC_CadastrarCliente
+    usecase "Buscar Cliente" as UC_BuscarCliente
+    usecase "Agendar Serviço" as UC_Agendar
+    usecase "Reagendar Serviço" as UC_Reagendar
+    usecase "Cancelar Agendamento" as UC_Cancelar
+    usecase "Finalizar Atendimento" as UC_Finalizar
+    usecase "Consultar Disponibilidade" as UC_ConsultarDisp
+    usecase "Visualizar Minha Agenda" as UC_VisAgenda
+    usecase "Atualizar Perfil" as UC_AtualizarPerfil
+    usecase "Visualizar Histórico de Clientes" as UC_HistoricoCliente
+}
+
+' ========== RELACIONAMENTOS ==========
+Colaborador --> UC_Auth
+Colaborador --> UC_CadastrarCliente
+Colaborador --> UC_BuscarCliente
+Colaborador --> UC_Agendar
+Colaborador --> UC_Reagendar
+Colaborador --> UC_Cancelar
+Colaborador --> UC_Finalizar
+Colaborador --> UC_ConsultarDisp
+Colaborador --> UC_VisAgenda
+Colaborador --> UC_AtualizarPerfil
+Colaborador --> UC_HistoricoCliente
+
+' ========== RELACIONAMENTOS COM ENTIDADES ==========
+UC_CadastrarCliente --> Cliente : registra
+UC_BuscarCliente --> Cliente : localiza
+UC_HistoricoCliente --> Cliente : consulta
+
+' ========== RELACIONAMENTOS DE INCLUSÃO ==========
+UC_Agendar -.-> UC_ConsultarDisp : <<include>>
+UC_Finalizar -.-> UC_VisAgenda : <<include>>
+UC_Auth -.-> UC_VisAgenda : <<include>>
+
+@enduml

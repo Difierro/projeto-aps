@@ -1,0 +1,69 @@
+@startuml Casos de Uso - Gerente
+left to right direction
+
+' ========== ATORES ==========
+:Gerente: as Gerente
+:Colaborador: as Colaborador
+:Cliente: as Cliente
+:Sistema: as Sistema
+
+' Herança de Atores
+Gerente --|> Colaborador : herda
+
+' ========== CASOS DE USO COMPARTILHADOS (herança do Colaborador) ==========
+rectangle "Funcionalidades Compartilhadas com Colaborador" {
+    usecase "Autenticar no Sistema" as UC_Auth
+    usecase "Cadastrar Cliente" as UC_CadastrarCliente
+    usecase "Buscar Cliente" as UC_BuscarCliente
+    usecase "Agendar Serviço" as UC_Agendar
+    usecase "Consultar Disponibilidade" as UC_ConsultarDisp
+    usecase "Visualizar Agenda" as UC_VisAgenda
+}
+
+' ========== CASOS DE USO EXCLUSIVOS DO GERENTE ==========
+rectangle "Funcionalidades Exclusivas do Gerente" {
+    usecase "Gerenciar Colaboradores" as UC_GerColab
+    usecase "Cadastrar Colaborador" as UC_CadastrarColab
+    usecase "Remover Colaborador" as UC_RemoverColab
+    usecase "Listar Colaboradores" as UC_ListarColab
+    usecase "Controlar Permissões" as UC_Permissoes
+    usecase "Gerar Relatório" as UC_Relatorio
+    usecase "Consultar Histórico de Clientes" as UC_HistoricoCliente
+    usecase "Visualizar Dashboard" as UC_Dashboard
+    usecase "Configurar Sistema" as UC_Configurar
+}
+
+' ========== RELACIONAMENTOS - CASOS COMPARTILHADOS ==========
+Gerente --> UC_Auth
+Gerente --> UC_CadastrarCliente
+Gerente --> UC_BuscarCliente
+Gerente --> UC_Agendar
+Gerente --> UC_ConsultarDisp
+Gerente --> UC_VisAgenda
+
+' ========== RELACIONAMENTOS - CASOS EXCLUSIVOS ==========
+Gerente --> UC_GerColab
+Gerente --> UC_CadastrarColab
+Gerente --> UC_RemoverColab
+Gerente --> UC_ListarColab
+Gerente --> UC_Permissoes
+Gerente --> UC_Relatorio
+Gerente --> UC_HistoricoCliente
+Gerente --> UC_Dashboard
+Gerente --> UC_Configurar
+
+' ========== RELACIONAMENTOS COM ENTIDADES ==========
+UC_CadastrarCliente --> Cliente : registra
+UC_BuscarCliente --> Cliente : localiza
+UC_HistoricoCliente --> Cliente : consulta
+UC_ListarColab --> Colaborador : gerencia
+UC_CadastrarColab --> Colaborador : registra
+UC_RemoverColab --> Colaborador : remove
+
+' ========== RELACIONAMENTOS DE INCLUSÃO ==========
+UC_Agendar -.-> UC_ConsultarDisp : <<include>>
+UC_Auth -.-> UC_VisAgenda : <<include>>
+UC_GerColab -.-> UC_ListarColab : <<include>>
+UC_Relatorio -.-> UC_Dashboard : <<include>>
+
+@enduml
