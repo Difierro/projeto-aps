@@ -1,47 +1,41 @@
-@startuml Casos de Uso - Colaborador
+@startuml
 left to right direction
 
-' ========== ATORES ==========
-:Colaborador: as Colaborador
-:Cliente: as Cliente
-:Sistema: as Sistema
+actor "Colaborador" as colaborador
 
-' ========== CASOS DE USO DO COLABORADOR ==========
-rectangle "Funcionalidades do Colaborador" {
-    usecase "Autenticar no Sistema" as UC_Auth
-    usecase "Cadastrar Cliente" as UC_CadastrarCliente
-    usecase "Buscar Cliente" as UC_BuscarCliente
-    usecase "Agendar Serviço" as UC_Agendar
-    usecase "Reagendar Serviço" as UC_Reagendar
-    usecase "Cancelar Agendamento" as UC_Cancelar
-    usecase "Finalizar Atendimento" as UC_Finalizar
-    usecase "Consultar Disponibilidade" as UC_ConsultarDisp
-    usecase "Visualizar Minha Agenda" as UC_VisAgenda
-    usecase "Atualizar Perfil" as UC_AtualizarPerfil
-    usecase "Visualizar Histórico de Clientes" as UC_HistoricoCliente
+rectangle "MCU01 - Colaborador"{
+
+    usecase "Realizar Login" as login
+
+    usecase "Cadastrar Cliente" as cadastrar_cliente
+    usecase "Consultar Cliente" as buscar_cliente
+    usecase "Visualizar Cliente" as visualizar_cliente
+    usecase "Visualizar Histórico" as visualizar_historico
+
+    usecase "Agendar Serviço" as agendar
+    usecase "Reagendar Serviço" as reagendar
+    usecase "Cancelar Agendamento" as cancelar
+    usecase "Visualizar Agenda" as visualizar_agenda
+
+    usecase "Finalizar Atendimento" as finalizar
+    usecase "Registrar Valor" as registrar_valor
+    usecase "Registrar Pagamento" as registrar_pagamento
 }
 
-' ========== RELACIONAMENTOS ==========
-Colaborador --> UC_Auth
-Colaborador --> UC_CadastrarCliente
-Colaborador --> UC_BuscarCliente
-Colaborador --> UC_Agendar
-Colaborador --> UC_Reagendar
-Colaborador --> UC_Cancelar
-Colaborador --> UC_Finalizar
-Colaborador --> UC_ConsultarDisp
-Colaborador --> UC_VisAgenda
-Colaborador --> UC_AtualizarPerfil
-Colaborador --> UC_HistoricoCliente
+colaborador -- login
 
-' ========== RELACIONAMENTOS COM ENTIDADES ==========
-UC_CadastrarCliente --> Cliente : registra
-UC_BuscarCliente --> Cliente : localiza
-UC_HistoricoCliente --> Cliente : consulta
+colaborador -- buscar_cliente
+buscar_cliente <.. visualizar_cliente : <<extend>>
+visualizar_cliente <.. visualizar_historico : <<extend>>
+visualizar_cliente <.. cadastrar_cliente : <<extend>>
 
-' ========== RELACIONAMENTOS DE INCLUSÃO ==========
-UC_Agendar -.-> UC_ConsultarDisp : <<include>>
-UC_Finalizar -.-> UC_VisAgenda : <<include>>
-UC_Auth -.-> UC_VisAgenda : <<include>>
+colaborador -- visualizar_agenda
+visualizar_agenda <.. agendar : <<extend>>
+visualizar_agenda <.. reagendar : <<extend>>
+visualizar_agenda <.. cancelar : <<extend>>
+
+colaborador -- finalizar
+finalizar ..> registrar_valor : <<include>>
+finalizar ..> registrar_pagamento : <<include>>
 
 @enduml

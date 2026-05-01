@@ -1,8 +1,8 @@
-## UC02 - Realizar Agendamento
+## UC02 - Cadastrar Cliente
 
 ### 1. Descrição
 
-É o processo onde um usuário do sistema (Gestor ou Cabeleireira) realiza o agendamento de um serviço para um cliente no sistema do salão de beleza.
+É o processo onde um usuário do sistema (Gerente ou Colaborador) realiza o cadastro de um novo cliente no sistema do salão de beleza.
 
 ### 2. Importância
 
@@ -10,57 +10,50 @@ Alta
 
 ### 3. Ator Primário / Ator Secundário
 
-- Primário: Usuário (Gestor ou Cabeleireira)
+- Primário: Usuário (Gerente ou Colaborador)
 
 ### 4. Pré-condições
 
-- Usuário autenticado no sistema;
-- Cliente previamente cadastrado no sistema.
+- Usuário autenticado no sistema.
 
 ### 5. Pós-condições
 
-- Agendamento cadastrado com sucesso;
-- Dados do agendamento armazenados no sistema.
+- Cliente cadastrado com sucesso;
+- Dados do cliente armazenados no sistema.
 
 ### 6. Fluxo Principal
 
-#### P1. Realizar Agendamento
-##### P1.1 Usuário navega até a aba de agendamentos;
-##### P1.2 Usuário seleciona a opção "Novo Agendamento"; A1
-##### P1.3 Sistema exibe o formulário de agendamento;
-##### P1.4 Usuário informa os dados do agendamento (cliente, data, horário, tipo de serviço); E1
+#### P1. Cadastrar Cliente
+##### P1.1 Usuario navega até a aba clientes;
+##### P1.2  Usuário seleciona a opção "novo Cliente"; A1
+##### P1.3 Sistema exibe o formulário de cadastro;
+##### P1.4 Usuário informa os dados do cliente (nome, telefone, preferências); E1
 ##### P1.5 Usuário seleciona a opção "Salvar";
-##### P1.6 Sistema verifica a disponibilidade do horário; E2
-##### P1.7 Sistema valida os dados informados; E3
-##### P1.8 Sistema realiza o cadastro do agendamento;
-##### P1.9 Sistema exibe mensagem de sucesso;
-##### P1.10 Caso de uso finalizado.
+##### P1.6 Sistema valida os dados informados; E2
+##### P1.7 Sistema realiza o cadastro do cliente;
+##### P1.8 Sistema exibe mensagem de sucesso;
+##### P1.9 Caso de uso finalizado.
 
 ### 7. Fluxo Alternativo
 
-#### A1. Cancelar Agendamento
-##### A1.1 Usuário seleciona "Cancelar"; P1.1
+#### A1. Cancelar Cadastro
+##### A1.1 Usuário seleciona "Cancelar"; P1.2
 
 ### 8. Fluxo de Exceção
 
 #### E1. Dados Incompletos
-##### E1.1 Caso algum campo obrigatório não esteja preenchido, o sistema exibe mensagem "Preencha todos os campos obrigatórios"; P1.4
-
-#### E2. Horário Indisponível
-##### E2.1 Caso o horário já esteja ocupado, o sistema exibe mensagem "Horário indisponível, escolha outro"; P1.4
-
-#### E3. Cliente não encontrado
-##### E3.1 Sistema exibe mensagem "Cliente não cadastrado"; P1.4
+##### E1.1 Caso o campo nome não esteja preenchido, o sistema exibe mensagem "Preencha este campo"; P1.4
 
 ### 9. Regras de Negócio
 
-#### RN01 - O cliente deve estar previamente cadastrado no sistema;
-#### RN02 - Não é permitido agendar dois atendimentos para o mesmo horário e profissional;
-#### RN03 - O agendamento só pode ser realizado por usuários autenticados;
-#### RN04 - O sistema deve validar a disponibilidade antes de confirmar o agendamento;
+#### RN01 - O cliente deve possuir nome obrigatório;
+#### RN02 - O cadastro só pode ser realizado por usuários autenticados.
 
 -------------------------------------
 
 ### Histórico
 
-- Data: 30/04/2026 - Versão Inicial - Responsável: Shamyra
+- Data: 29/04/2026 - Versão Inicial - Responsável: Evelyn Cristina
+- Data: 30/04/2026 - Versão corrigida - Responsável: Evelyn Cristina
+- Data: 30/04/2026 - Versão corrigida - Responsável: Maria Aparecida
+
