@@ -2,7 +2,7 @@
 
 ### 1. Descrição
 
-É o processo onde um usuário do sistema (Gerente ou Colaborador) realiza a autenticação para acessar o sistema do salão de beleza.
+É o processo onde um usuário do sistema (Gestor ou Colaborador) realiza a autenticação para acessar o sistema do salão de beleza.
 
 ### 2. Importância
 
@@ -70,4 +70,5 @@ Alta
 -------------------------------------
 ### Histórico
 
-- Data: 30/04/2026 - Versão Inicial - Responsável: Jéssica 
+- Data: 30/04/2026 - Versão Inicial - Responsável: Jéssica Isabela
+- Data: 30/04/2026 - Versão corrigida - Responsável: Jéssica Isabela

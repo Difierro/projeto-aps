@@ -1,0 +1,134 @@
+@startuml
+title Processo Principal do Sistema - Agendar Serviço
+
+start
+
+:Usuário acessa o sistema;
+
+:Informa login e senha;
+
+if (Credenciais válidas?) then (Sim)
+
+    :Sistema autentica usuário;
+
+    :Visualizar Agenda;
+
+    :Selecionar "Agendar Serviço";
+
+    :Informar nome ou telefone do cliente;
+
+    :Buscar Cliente;
+
+    if (Cliente encontrado?) then (Sim)
+
+        :Selecionar cliente;
+
+    else (Não)
+
+        :Cadastrar Cliente;
+        :Informar nome;
+        :Informar telefone;
+        :Informar preferências;
+
+        if (Dados obrigatórios preenchidos?) then (Sim)
+
+            :Salvar Cliente;
+
+        else (Não)
+
+            :Exibir mensagem de erro;
+            stop
+
+        endif
+
+    endif
+
+    :Selecionar serviço desejado;
+
+    :Informar data desejada;
+
+    :Informar horário desejado;
+
+    fork
+
+        :Consultar disponibilidade do horário;
+
+    fork again
+
+        :Consultar agenda do profissional;
+
+    end fork
+
+    if (Horário disponível?) then (Sim)
+
+        :Criar Agendamento;
+
+        :Definir profissional responsável;
+
+        :Registrar informações do atendimento;
+
+        fork
+
+            :Atualizar Agenda;
+
+        fork again
+
+            :Registrar histórico do cliente;
+
+        fork again
+
+            :Gerar registro do agendamento;
+
+        end fork
+
+        :Exibir resumo do agendamento;
+
+        if (Confirmar agendamento?) then (Sim)
+
+            :Salvar Agendamento;
+
+            :Exibir mensagem de sucesso;
+
+        else (Não)
+
+            :Cancelar operação;
+
+        endif
+
+    else (Não)
+
+        :Exibir horários alternativos;
+
+        if (Selecionar novo horário?) then (Sim)
+
+            :Escolher novo horário;
+            :Consultar disponibilidade novamente;
+
+            if (Novo horário disponível?) then (Sim)
+
+                :Salvar Agendamento;
+                :Exibir mensagem de sucesso;
+
+            else (Não)
+
+                :Cancelar agendamento;
+
+            endif
+
+        else (Não)
+
+            :Cancelar agendamento;
+
+        endif
+
+    endif
+
+else (Não)
+
+    :Exibir mensagem "Login ou senha inválidos";
+
+endif
+
+stop
+
+@enduml
