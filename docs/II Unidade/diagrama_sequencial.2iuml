@@ -1,0 +1,59 @@
+@startuml
+
+hide footbox
+
+actor "Usuário\n(Gerente ou Colaborador)" as usuario
+
+usuario -> InterfaceAgendamentos: 1:novoAgendamento()
+activate InterfaceAgendamentos
+
+InterfaceAgendamentos --> usuario: 1.1:exibirFormularioAgendamento()
+
+usuario -> InterfaceAgendamentos: 2:informarDadosAgendamento(clienteId, profissionalId, dataHora, tipoServico, observacoes)
+usuario -> InterfaceAgendamentos: 3:salvarAgendamento()
+
+InterfaceAgendamentos -> ControleAgendamentos: 3.1:cadastrarAgendamento(clienteId, profissionalId, dataHora, tipoServico, observacoes)
+activate ControleAgendamentos
+
+ControleAgendamentos -> Cliente: 3.1.1:validarCliente(clienteId)
+Cliente --> ControleAgendamentos
+
+ControleAgendamentos -> Profissional: 3.1.2:validarProfissional(profissionalId)
+Profissional --> ControleAgendamentos
+
+ControleAgendamentos -> RepositorioAgendamentos: 3.1.3:buscarAgendamentosDoProfissional(profissionalId, dataHora)
+activate RepositorioAgendamentos
+RepositorioAgendamentos --> ControleAgendamentos: listaAgendamentos
+deactivate RepositorioAgendamentos
+
+ControleAgendamentos -> Agendamento: 3.1.4:conflita(listaAgendamentos)
+activate Agendamento
+Agendamento --> ControleAgendamentos: resultadoConflito
+deactivate Agendamento
+
+alt Não existe conflito de horário
+
+    ControleAgendamentos -> Agendamento: 3.1.5:criarAgendamento(clienteId, profissionalId, dataHora, tipoServico, observacoes)
+    activate Agendamento
+    Agendamento --> ControleAgendamentos: agendamentoCriado
+    deactivate Agendamento
+
+    ControleAgendamentos -> RepositorioAgendamentos: 3.1.6:salvarAgendamento(agendamento)
+    activate RepositorioAgendamentos
+    RepositorioAgendamentos --> ControleAgendamentos
+    deactivate RepositorioAgendamentos
+
+    ControleAgendamentos --> InterfaceAgendamentos: 3.1.7:agendamentoRealizado()
+    InterfaceAgendamentos --> usuario: 3.1.8:exibirMensagemSucesso()
+
+else Existe conflito de horário
+
+    ControleAgendamentos --> InterfaceAgendamentos: 3.1.9:horarioIndisponivel()
+    InterfaceAgendamentos --> usuario: 3.1.10:exibirMensagemErro()
+
+end
+
+deactivate ControleAgendamentos
+deactivate InterfaceAgendamentos
+
+@enduml
