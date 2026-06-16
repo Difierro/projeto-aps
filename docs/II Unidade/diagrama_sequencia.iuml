@@ -3,30 +3,43 @@ hide footbox
 
 actor "Usuário\n(Gerente ou Colaborador)" as usuario
 
-usuario -> InterfaceClientes: 1:novoCliente()
+usuario -> InterfaceClientes: 1:acessarAbaClientes()
 activate InterfaceClientes
 
-InterfaceClientes --> usuario: 1.1:exibirFormularioCadastro()
+InterfaceClientes --> usuario: 1.1:exibirClientes()
 
-usuario -> InterfaceClientes: 2:informarDadosCliente(nome, telefone, preferencias)
-usuario -> InterfaceClientes: 3:salvarCliente()
+usuario -> InterfaceClientes: 2:novoCliente()
+InterfaceClientes --> usuario: 2.1:exibirFormularioCadastro()
 
-InterfaceClientes -> ControleClientes: 3.1:cadastrarCliente(nome, telefone, preferencias)
-activate ControleClientes
+alt Cancelar cadastro
+    usuario -> InterfaceClientes: 3:cancelarCadastro()
+    InterfaceClientes --> usuario: 3.1:retornarParaAbaClientes()
 
-ControleClientes -> Cliente: 3.1.1:validarDados(nome, telefone, preferencias)
-Cliente --> ControleClientes
+else Continuar cadastro
+    usuario -> InterfaceClientes: 3:informarDadosCliente(nome, telefone, preferencias)
+    usuario -> InterfaceClientes: 4:salvarCliente()
 
-ControleClientes -> Cliente: 3.1.2:registrarCliente(nome, telefone, preferencias)
-Cliente --> ControleClientes
+    InterfaceClientes -> GestaoService: 4.1:cadastrarCliente(dados)
+    activate GestaoService
 
-ControleClientes -> RepositorioClientes: 3.1.3:salvarCliente(cliente)
-RepositorioClientes --> ControleClientes
+    GestaoService -> Cliente: 4.1.1:validarDados(nome, telefone, preferencias)
+    Cliente --> GestaoService
 
-ControleClientes --> InterfaceClientes: 3.1.4:cadastroRealizado()
-deactivate ControleClientes
+    alt Nome não preenchido
+        GestaoService --> InterfaceClientes: 4.1.2:erro("Preencha este campo")
+        InterfaceClientes --> usuario: 4.1.3:exibirMensagemErro()
 
-InterfaceClientes --> usuario: 3.1.5:exibirMensagemSucesso()
+    else Dados válidos
+        GestaoService -> Cliente: 4.1.2:criarCliente(nome, telefone, preferencias)
+        Cliente --> GestaoService: cliente
+
+        GestaoService --> InterfaceClientes: 4.1.3:clienteCadastrado(cliente)
+        InterfaceClientes --> usuario: 4.1.4:exibirMensagemSucesso()
+    end
+
+    deactivate GestaoService
+end
+
 deactivate InterfaceClientes
 
 @enduml
