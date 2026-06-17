@@ -3,41 +3,42 @@ hide footbox
 
 actor "Usuário\n(Gerente ou Colaborador)" as usuario
 
-usuario -> InterfaceClientes: 1:acessarAbaClientes()
+usuario -> InterfaceClientes: 1:novoCliente()
 activate InterfaceClientes
 
-InterfaceClientes --> usuario: 1.1:exibirClientes()
-
-usuario -> InterfaceClientes: 2:novoCliente()
-InterfaceClientes --> usuario: 2.1:exibirFormularioCadastro()
+InterfaceClientes --> usuario: 1.1:exibirFormularioCadastro()
 
 alt Cancelar cadastro
-    usuario -> InterfaceClientes: 3:cancelarCadastro()
-    InterfaceClientes --> usuario: 3.1:retornarParaAbaClientes()
+
+    usuario -> InterfaceClientes: 2:cancelarCadastro()
+
+    InterfaceClientes --> usuario: 2.1:retornarParaAbaClientes()
 
 else Continuar cadastro
-    usuario -> InterfaceClientes: 3:informarDadosCliente(nome, telefone, preferencias)
-    usuario -> InterfaceClientes: 4:salvarCliente()
 
-    InterfaceClientes -> GestaoService: 4.1:cadastrarCliente(dados)
+    usuario -> InterfaceClientes: 2:informarDados(nome, telefone, preferencias)
+
+    usuario -> InterfaceClientes: 3:salvarCliente()
+
+    InterfaceClientes -> GestaoService: 3.1:cadastrarCliente(dados)
     activate GestaoService
 
-    GestaoService -> Cliente: 4.1.1:validarDados(nome, telefone, preferencias)
-    Cliente --> GestaoService
+    alt Dados inválidos
 
-    alt Nome não preenchido
-        GestaoService --> InterfaceClientes: 4.1.2:erro("Preencha este campo")
-        InterfaceClientes --> usuario: 4.1.3:exibirMensagemErro()
+        GestaoService --> InterfaceClientes: 3.1.1:erroValidacao()
+
+        InterfaceClientes --> usuario: 3.1.2:exibirMensagemErro()
 
     else Dados válidos
-        GestaoService -> Cliente: 4.1.2:criarCliente(nome, telefone, preferencias)
-        Cliente --> GestaoService: cliente
 
-        GestaoService --> InterfaceClientes: 4.1.3:clienteCadastrado(cliente)
-        InterfaceClientes --> usuario: 4.1.4:exibirMensagemSucesso()
+        GestaoService --> InterfaceClientes: 3.1.1:clienteCadastrado()
+
+        InterfaceClientes --> usuario: 3.1.2:exibirMensagemSucesso()
+
     end
 
     deactivate GestaoService
+
 end
 
 deactivate InterfaceClientes

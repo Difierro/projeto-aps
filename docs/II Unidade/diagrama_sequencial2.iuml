@@ -1,0 +1,44 @@
+@startuml
+hide footbox
+
+actor "Usuário\n(Gerente ou Colaborador)" as usuario
+
+usuario -> InterfaceAgendamentos: 1:novoAgendamento()
+activate InterfaceAgendamentos
+
+InterfaceAgendamentos --> usuario: 1.1:exibirFormulario()
+
+usuario -> InterfaceAgendamentos: 2:informarDados(clienteId, profissionalId, dataHora, tipoServico, observacoes)
+
+usuario -> InterfaceAgendamentos: 3:salvarAgendamento()
+
+InterfaceAgendamentos -> AgendamentoService: 3.1:criarAgendamento(dados)
+activate AgendamentoService
+
+AgendamentoService -> AgendamentoService: 3.1.1:verificarDisponibilidade(profissionalId, dataHora)
+
+alt Horário disponível
+
+    AgendamentoService -> Agendamento: 3.1.2:criarAgendamento(dados)
+    activate Agendamento
+
+    Agendamento --> AgendamentoService: agendamentoCriado
+
+    deactivate Agendamento
+
+    AgendamentoService --> InterfaceAgendamentos: 3.1.3:agendamentoConfirmado()
+
+    InterfaceAgendamentos --> usuario: 3.1.4:exibirMensagemSucesso()
+
+else Horário indisponível
+
+    AgendamentoService --> InterfaceAgendamentos: 3.1.5:horarioIndisponivel()
+
+    InterfaceAgendamentos --> usuario: 3.1.6:exibirMensagemErro()
+
+end
+
+deactivate AgendamentoService
+deactivate InterfaceAgendamentos
+
+@enduml
