@@ -1,0 +1,74 @@
+@startuml "Agendar Servico"
+
+start
+
+:Realizar Login;
+
+if (Credenciais validas?) then (Sim)
+
+    :Visualizar Agenda;
+
+    :Selecionar Novo Agendamento;
+
+    :Informar Cliente;
+
+    if (Cliente cadastrado?) then (Sim)
+
+        :Selecionar Cliente;
+
+    else (Nao)
+
+        :Cadastrar Cliente;
+
+        if (Dados validos?) then (Sim)
+
+            :Salvar Cliente;
+
+        else (Nao)
+
+            :Exibir Mensagem de Erro;
+            stop
+
+        endif
+
+    endif
+
+    :Selecionar Profissional;
+
+    :Selecionar Data Disponivel;
+
+    :Selecionar Horario Disponivel;
+
+    :Informar Servico;
+
+    if (Confirmar Agendamento?) then (Sim)
+
+        fork
+
+            :Registrar Agendamento;
+
+        fork again
+
+            :Atualizar Agenda;
+
+        end fork
+
+        :Exibir Mensagem de Sucesso;
+
+    else (Nao)
+
+        :Cancelar Operacao;
+
+    endif
+
+    :Encerrar Agendamento;
+
+else (Nao)
+
+    :Exibir Mensagem de Login Invalido;
+
+endif
+
+stop
+
+@enduml

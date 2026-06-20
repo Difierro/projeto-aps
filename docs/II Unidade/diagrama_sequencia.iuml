@@ -1,0 +1,46 @@
+@startuml
+hide footbox
+
+actor "Usuário\n(Gerente ou Colaborador)" as usuario
+
+usuario -> InterfaceClientes: 1:novoCliente()
+activate InterfaceClientes
+
+InterfaceClientes --> usuario: 1.1:exibirFormularioCadastro()
+
+alt Cancelar cadastro
+
+    usuario -> InterfaceClientes: 2:cancelarCadastro()
+
+    InterfaceClientes --> usuario: 2.1:retornarParaAbaClientes()
+
+else Continuar cadastro
+
+    usuario -> InterfaceClientes: 2:informarDados(nome, telefone, preferencias)
+
+    usuario -> InterfaceClientes: 3:salvarCliente()
+
+    InterfaceClientes -> GestaoService: 3.1:cadastrarCliente(dados)
+    activate GestaoService
+
+    alt Dados inválidos
+
+        GestaoService --> InterfaceClientes: 3.1.1:erroValidacao()
+
+        InterfaceClientes --> usuario: 3.1.2:exibirMensagemErro()
+
+    else Dados válidos
+
+        GestaoService --> InterfaceClientes: 3.1.1:clienteCadastrado()
+
+        InterfaceClientes --> usuario: 3.1.2:exibirMensagemSucesso()
+
+    end
+
+    deactivate GestaoService
+
+end
+
+deactivate InterfaceClientes
+
+@enduml

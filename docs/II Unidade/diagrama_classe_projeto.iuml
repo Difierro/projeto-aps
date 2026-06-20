@@ -1,0 +1,72 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+
+class Usuario {
+    - id : int
+    - nome : str
+    - email : str
+    - senha : str
+    - tipoUsuario : str
+    - ativo : bool
+
+    + autenticar(email: str, senha: str) : bool
+    + ehGerente() : bool
+}
+
+class Cliente {
+    - id : int
+    - nome : str
+    - telefone : str
+    - preferencias : str
+    - dataCadastro : dateTime
+}
+
+class GestaoService {
+    + cadastrarUsuario(dados: dict) : Usuario
+    + removerUsuario(id: int) : bool
+    + listarUsuarios() : List<Usuario>
+    + cadastrarCliente(dados: dict) : Cliente
+    + buscarCliente(filtro: str) : List<Cliente>
+    + obterHistoricoCliente(id: int) : List<Agendamento>
+}
+
+class AgendamentoService {
+    + criarAgendamento(dados: dict) : Agendamento
+    + reagendar(id: int, novaData: dateTime) : Agendamento
+    + cancelarAgendamento(id: int) : bool
+    + verificarDisponibilidade(profId: int, dataHora: dateTime) : bool
+    + obterAgenda(profId: int, data: date) : List<Agendamento>
+    + finalizarAtendimento(id: int, valor: float, pagamento: str) : void
+    + gerarRelatorio(inicio: date, fim: date) : dict
+}
+
+class Agendamento {
+    - id : int
+    - clienteId : int
+    - profissionalId : int
+    - dataHora : dateTime
+    - tipoServico : str
+    - status : str
+    - valor : float
+    - tipoPagamento : str
+    - horaInicio : dateTime
+    - observacoes : str
+
+    + reagendar(novaData: dateTime) : bool
+    + cancelar() : bool
+    + finalizar(valor: float, pagamento: str) : bool
+    + conflita(outro: Agendamento) : bool
+}
+
+GestaoService ..> Usuario : gerencia
+GestaoService ..> Cliente : gerencia
+
+AgendamentoService ..> Usuario : consulta
+AgendamentoService ..> Cliente : consulta
+AgendamentoService ..> Agendamento : gerencia
+
+Usuario "1" *-- "0..*" Agendamento : atende
+Cliente "1" *-- "0..*" Agendamento : possui
+
+@enduml

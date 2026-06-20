@@ -1,0 +1,45 @@
+@startuml
+left to right direction
+
+actor "Gerente" as gerente
+
+rectangle "MCU02 - Gerente"{
+
+    usecase "Realizar Login" as login
+
+    usecase "Cadastrar Colaborador" as cadastrar_colaborador
+    usecase "Remover Colaborador" as remover_colaborador
+    usecase "Listar Colaboradores" as listar_colaboradores
+
+    usecase "Cadastrar Cliente" as cadastrar_cliente
+    usecase "Buscar Cliente" as buscar_cliente
+    usecase "Visualizar Cliente" as visualizar_cliente
+    usecase "Visualizar Histórico" as visualizar_historico
+
+    usecase "Agendar Serviço" as agendar
+    usecase "Reagendar Serviço" as reagendar
+    usecase "Cancelar Agendamento" as cancelar
+    usecase "Visualizar Agenda" as visualizar_agenda
+
+    usecase "Gerar Relatório Financeiro" as relatorio
+}
+
+gerente -- login
+
+gerente -- cadastrar_colaborador
+gerente -- remover_colaborador
+gerente -- listar_colaboradores
+
+gerente -- buscar_cliente
+buscar_cliente <.. visualizar_cliente : <<extend>>
+visualizar_cliente <.. visualizar_historico : <<extend>>
+visualizar_cliente <.. cadastrar_cliente : <<extend>>
+
+gerente -- visualizar_agenda
+visualizar_agenda <.. agendar : <<extend>>
+visualizar_agenda <.. reagendar : <<extend>>
+visualizar_agenda <.. cancelar : <<extend>>
+
+gerente -- relatorio
+
+@enduml

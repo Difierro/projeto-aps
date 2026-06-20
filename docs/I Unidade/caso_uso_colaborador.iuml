@@ -1,0 +1,41 @@
+@startuml
+left to right direction
+
+actor "Colaborador" as colaborador
+
+rectangle "MCU01 - Colaborador"{
+
+    usecase "Realizar Login" as login
+
+    usecase "Cadastrar Cliente" as cadastrar_cliente
+    usecase "Consultar Cliente" as buscar_cliente
+    usecase "Visualizar Cliente" as visualizar_cliente
+    usecase "Visualizar Histórico" as visualizar_historico
+
+    usecase "Agendar Serviço" as agendar
+    usecase "Reagendar Serviço" as reagendar
+    usecase "Cancelar Agendamento" as cancelar
+    usecase "Visualizar Agenda" as visualizar_agenda
+
+    usecase "Finalizar Atendimento" as finalizar
+    usecase "Registrar Valor" as registrar_valor
+    usecase "Registrar Pagamento" as registrar_pagamento
+}
+
+colaborador -- login
+
+colaborador -- buscar_cliente
+buscar_cliente <.. visualizar_cliente : <<extend>>
+visualizar_cliente <.. visualizar_historico : <<extend>>
+visualizar_cliente <.. cadastrar_cliente : <<extend>>
+
+colaborador -- visualizar_agenda
+visualizar_agenda <.. agendar : <<extend>>
+visualizar_agenda <.. reagendar : <<extend>>
+visualizar_agenda <.. cancelar : <<extend>>
+
+colaborador -- finalizar
+finalizar ..> registrar_valor : <<include>>
+finalizar ..> registrar_pagamento : <<include>>
+
+@enduml
