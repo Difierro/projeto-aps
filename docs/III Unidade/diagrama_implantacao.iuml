@@ -1,0 +1,38 @@
+@startuml
+title Diagrama de Implantação - Sistema de Gerenciamento de Salão de Beleza
+
+left to right direction
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+node "Dispositivo do Usuário\n(Gerente ou Colaborador)" as Dispositivo {
+    artifact "Navegador Web" as Navegador
+}
+
+node "Servidor da Aplicação" as ServidorAplicacao {
+
+    artifact "Sistema de Gerenciamento\ndo Salão de Beleza" as Sistema
+
+    component "GestaoService" as GestaoService
+    component "AgendamentoService" as AgendamentoService
+
+    artifact "Modelo de Domínio\nUsuario\nCliente\nAgendamento" as ModeloDominio
+}
+
+database "Servidor de Banco de Dados" as ServidorBanco {
+    artifact "Base de Dados do Salão" as Banco
+}
+
+Navegador --> Sistema : HTTP/HTTPS
+
+Sistema --> GestaoService : operações de gestão
+Sistema --> AgendamentoService : operações de agendamento
+
+GestaoService --> ModeloDominio : usa Usuario e Cliente
+
+AgendamentoService --> ModeloDominio : usa Usuario,\nCliente e Agendamento
+
+GestaoService --> Banco : persistência de dados
+AgendamentoService --> Banco : persistência de agendamentos
+
+@enduml
