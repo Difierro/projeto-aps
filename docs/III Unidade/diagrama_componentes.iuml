@@ -1,0 +1,76 @@
+@startuml
+
+left to right direction
+skinparam componentStyle uml2
+skinparam linetype ortho
+skinparam shadowing false
+skinparam nodesep 120
+skinparam ranksep 120
+
+title Diagrama de Componentes - Sistema de Gerenciamento de Salão de Beleza
+
+package "Camada de Apresentação" {
+    component "Interface do Sistema\n(Gerente ou Colaborador)" as InterfaceSistema
+}
+
+package "Camada de Aplicação" {
+    component "Gestão de Usuários\ne Clientes\nGestaoService" as GestaoService
+    component "Agendamento de\nAtendimentos\nAgendamentoService" as AgendamentoService
+}
+
+package "Camada de Domínio" {
+    component "Modelo de Domínio\nUsuario\nCliente\nAgendamento" as ModeloDominio
+}
+
+package "Camada de Persistência" {
+    component "Repositórios\nClienteRepository\nUsuarioRepository\nAgendamentoRepository" as Repositorios
+    database "Banco de Dados\ndo Salão de Beleza" as BancoDados
+}
+
+() "IGestao\nClientesUsuarios" as IGestao
+() "IAgendamento\nAtendimento" as IAgendamento
+() "IPersistencia" as IPersistencia
+
+GestaoService - IGestao
+AgendamentoService - IAgendamento
+Repositorios - IPersistencia
+
+InterfaceSistema ..> IGestao : gerenciar\nusuários e clientes
+InterfaceSistema ..> IAgendamento : gerenciar\natendimentos
+
+GestaoService ..> IPersistencia : salvar/consultar\ndados
+AgendamentoService ..> IPersistencia : salvar/consultar\nagenda
+
+GestaoService ..> ModeloDominio : usa Usuario\ne Cliente
+AgendamentoService ..> ModeloDominio : usa Agendamento,\nCliente e Usuario
+
+Repositorios ..> ModeloDominio : mapeia\nentidades
+Repositorios --> BancoDados : CRUD
+
+note right of IGestao
+Serviços oferecidos:
+
++ cadastrarUsuario()
++ removerUsuario()
++ listarUsuarios()
+
++ cadastrarCliente()
++ buscarCliente()
++ obterHistoricoCliente()
+end note
+
+note right of IAgendamento
+Serviços oferecidos:
+
++ criarAgendamento()
++ reagendar()
++ cancelarAgendamento()
+
++ verificarDisponibilidade()
++ obterAgenda()
+
++ finalizarAtendimento()
++ gerarRelatorio()
+end note
+
+@enduml
