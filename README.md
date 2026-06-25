@@ -40,7 +40,16 @@ O objetivo deste software é otimizar a administração de um Salão de Beleza, 
 * **Pydantic:** Validação de dados e schemas.
 * **Passlib (Argon2) & Python-Jose:** Criptografia de senhas e geração de tokens JWT.
 
-## Como Executar o Projeto
+**Infraestrutura & Nuvem (Deploy)**
+* **Vercel:** Hospedagem automatizada do Frontend com pipeline de Deploy Contínuo (toda alteração na branch `main` atualiza o site instantaneamente).
+* **Render:** Hospedagem automatizada do serviço de API Backend em arquitetura de containers independentes.
+
+## Deploy
+O projeto foi publicado com sucesso na nuvem e pode ser acessado e testado diretamente pelo link abaixo:
+
+**Link da Aplicação:** [https://gestor-salao.vercel.app/](https://gestor-salao.vercel.app/)
+
+## Como Executar o Projeto Localmente
 
 Certifique-se de ter **Python**, **Node.js** e **Git** instalados.
 
