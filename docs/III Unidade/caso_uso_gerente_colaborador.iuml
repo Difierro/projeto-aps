@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+
+actor "Gerente" as gerente
+actor "Colaborador" as colaborador
+
+rectangle "MCU03 - Atendimento e Agendamento" {
+
+    usecase "Visualizar Agenda" as agenda
+    usecase "Agendar Serviço" as agendar
+    usecase "Reagendar Serviço" as reagendar
+    usecase "Cancelar Agendamento" as cancelar
+
+    usecase "Finalizar Atendimento" as finalizar
+    usecase "Registrar Valor" as valor
+    usecase "Registrar Pagamento" as pagamento
+}
+
+gerente -- agenda
+colaborador -- agenda
+
+agenda <.. agendar : <<extend>>
+agenda <.. reagendar : <<extend>>
+agenda <.. cancelar : <<extend>>
+
+colaborador -- finalizar
+gerente -- finalizar
+
+finalizar ..> valor : <<include>>
+finalizar ..> pagamento : <<include>>
+
+@enduml
