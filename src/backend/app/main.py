@@ -19,7 +19,36 @@ app.add_middleware(
 
 @app.on_event("startup")
 def on_startup():
+    # 1. Inicializa o banco de dados e cria as tabelas
     init_db()
+    
+    # 2. Cria o usuário administrador automaticamente se ele não existir
+    from database import SessionLocal
+    from auth import hash_password
+    
+    db = SessionLocal()
+    try:
+        email_admin = "admin@test.com"
+        # Verifica se o administrador já foi criado no banco
+        if not db.query(models.User).filter_by(email=email_admin).first():
+            print(f"Criando usuário administrador padrão: {email_admin}...")
+            senha_encriptada = hash_password("123456")
+            
+            admin = models.User(
+                nome="Admin", 
+                email=email_admin, 
+                senha_hash=senha_encriptada, 
+                tipo_usuario="gerente"
+            )
+            db.add(admin)
+            db.commit()
+            print(">>> SUCESSO: Usuário admin@test.com criado no deploy! <<<")
+        else:
+            print(">>> Usuário Admin já existe no banco de dados. <<<")
+    except Exception as e:
+        print(f"Erro ao inicializar o usuário admin no startup: {e}")
+    finally:
+        db.close()
 
 @app.post("/auth/login", response_model=schemas.Token)
 def login(payload: schemas.Login, db: Session = Depends(get_db)):
